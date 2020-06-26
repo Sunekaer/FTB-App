@@ -1,4 +1,5 @@
 export interface ModPack {
+    kind: 'modpack';
     synopsis: string;
     description: string;
     art: Art[];
@@ -13,9 +14,11 @@ export interface ModPack {
     type: string;
     updated: number;
     tags: string[];
+    notification: string;
 }
 
 export interface Instance {
+    kind: 'instance';
     id: number;
     uuid: string;
     name: string;
@@ -32,6 +35,7 @@ export interface Instance {
     recMemory: number;
     width: number;
     height: number;
+    notification: string;
 }
 
 export interface Art {

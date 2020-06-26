@@ -11,7 +11,7 @@ export const actions: ActionTree<ModpackState, RootState> = {
             return;
         }
         commit('setLoading', true);
-        fetch(`${config.apiURL}/public/modpack/search/8?term=${searchTerm}`)
+        return fetch(`${config.apiURL}/public/modpack/search/8?term=${searchTerm}`)
         .then((response) => response.json())
         .then(async (data) => {
             if (data.status === 'error') {
@@ -38,7 +38,7 @@ export const actions: ActionTree<ModpackState, RootState> = {
     },
     getPopularInstalls({commit, rootState, dispatch}: any): any {
         commit('setLoading', true);
-        fetch(`${config.apiURL}/public/modpack/popular/installs/10`)
+        return fetch(`${config.apiURL}/public/modpack/popular/installs/10`)
         .then((response) => response.json())
         .then(async (data) => {
             const packIDs = data.packs;
@@ -64,7 +64,7 @@ export const actions: ActionTree<ModpackState, RootState> = {
     },
     getPopularPlays({commit, rootState, dispatch}: any): any {
         commit('setLoading', true);
-        fetch(`${config.apiURL}/public/modpack/popular/plays/10`)
+        return fetch(`${config.apiURL}/public/modpack/popular/plays/10`)
         .then((response) => response.json())
         .then(async (data) => {
             const packIDs = data.packs;
@@ -95,7 +95,7 @@ export const actions: ActionTree<ModpackState, RootState> = {
     },
     loadFeaturedPacks({commit, rootState, dispatch}: any): any {
         commit('setLoading', true);
-        fetch(`${config.apiURL}/public/modpack/featured/5`)
+        return fetch(`${config.apiURL}/public/modpack/featured/10`)
         .then((response) => response.json()).then(async (data) => {
             const packIDs = data.packs;
             if (packIDs == null) {
@@ -185,9 +185,14 @@ export const actions: ActionTree<ModpackState, RootState> = {
             .then(async (response: any) => {
                 response = response as Response;
                 const pack: ModPack = await response.json() as ModPack;
-                pack.versions = pack.versions.sort((a, b) => {
-                    return semver.rcompare(a.name, b.name);
-                });
+                if(pack === undefined){
+                    return;
+                }
+                if(pack.versions !== undefined){
+                    pack.versions = pack.versions.sort((a, b) => {
+                        return semver.rcompare(a.name, b.name);
+                    });
+                }
                 commit('addToCache', pack);
                 resolve(pack);
             }).catch((err) => {
@@ -196,4 +201,14 @@ export const actions: ActionTree<ModpackState, RootState> = {
             });
         });
     },
+    async refreshCache({commit, rootState, dispatch}: any): Promise<any> {
+        let packIDs = Object.keys(rootState.modpacks.packsCache);
+        commit('clearCache');
+        await Promise.all(packIDs.map(async (id: any) => {
+            return await dispatch('fetchModpack', id);
+        }));
+        await dispatch('loadFeaturedPacks');
+        await dispatch('getPopularPlays');
+        await dispatch('getPopularInstalls');
+    }
 };

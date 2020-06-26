@@ -5,12 +5,12 @@
     <div class="nav-items flex-col">
       <nav-item :isActive="isActiveTab('news')" @click="goTo('news')"><font-awesome-icon icon="newspaper" size="lg" class="mr-3" />News</nav-item>
       <nav-item :isActive="isActiveTab('home')" @click="goTo('/')"><font-awesome-icon icon="home" size="lg" class="mr-3" />Home</nav-item>
-      <nav-item :isActive="isActiveTab('modpacks') || isActiveTab('browseModpacks')" @click="goTo('modpacks')" :hasSub="true"><font-awesome-icon icon="box-open" size="lg" class="mr-3" />Modpacks</nav-item>
+      <nav-item :isActive="isActiveTab('modpacks') || isActiveTab('browseModpacks')" @click="goTo('modpacks')"><font-awesome-icon icon="box-open" size="lg" class="mr-3" />Modpacks</nav-item>
     </div>
     <div class="nav-items flex-col mt-auto mb-0">
       <nav-item :isActive="isActiveTab('settings')" @click="goTo('/settings')"><font-awesome-icon icon="cog" size="lg" class="mr-3" />Settings</nav-item>
-      <nav-item v-if="auth.token === null" :isActive="isActiveTab('modpacks')" @click="openLogin()"><font-awesome-icon icon="sign-out-alt" size="lg" class="mr-3" />Login</nav-item>
-      <nav-item v-else class="capitalize"><img :src="`https://minotar.net/helm/${auth.token.mcUUID}`" style="margin-right: 0.75em;" width="21px" class="rounded-full" />{{auth.token.username}}</nav-item>
+      <!-- <nav-item v-if="auth.token === null" :isActive="isActiveTab('modpacks')" @click="openLogin()"><font-awesome-icon icon="sign-out-alt" size="lg" class="mr-3" />Login</nav-item>
+      <nav-item v-else class="capitalize"><img :src="`https://minotar.net/helm/${auth.token.mcUUID}`" style="margin-right: 0.75em;" width="21px" class="rounded-full" />{{auth.token.username}}</nav-item> -->
     </div>
     <img src="../assets/ch-logo.svg" width="90%" class="mb-2 cursor-pointer" draggable="false" @click="openPromo()"/>
   </div>

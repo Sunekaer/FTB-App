@@ -17,6 +17,8 @@ export const state: SettingsState = {
         threadLimit: 2,
         speedLimit: 0,
         cacheLife: 5184000,
+        packCardSize: 2,
+        instanceLocation: "",
     },
     error: false,
     hardware: {
